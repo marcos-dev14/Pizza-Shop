@@ -57,6 +57,8 @@ export function RevenueChart() {
               }
             />
 
+            <CartesianGrid vertical={false} className="stroke-muted" />
+
             <Line
               type="linear"
               dataKey="revenue"
