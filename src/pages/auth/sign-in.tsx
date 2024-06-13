@@ -7,6 +7,8 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useMutation } from '@tanstack/react-query'
+import { signIn } from '@/api/sign-in'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -22,11 +24,14 @@ export function SignIn() {
     formState: { isSubmitting },
   } = useForm<SignInForm>()
 
+  // Usando o react-query para fazer o controle das requisições, usamos o useMutation em toda requisição que não tem retorno de dados (put, patch e delete).
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
+
   async function handleSignIn(data: SignInForm) {
     try {
-      console.log(data)
-
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      authenticate({email: data.email})
 
       toast.success('Enviamos um link de autenticação para seu email.', {
         action: {
