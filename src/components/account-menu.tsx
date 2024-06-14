@@ -9,8 +9,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
+import { useQuery } from '@tanstack/react-query'
+import { getProfile } from '@/api/get-profile'
+import { getManagerRestaurant } from '@/api/get-manager-restaurant'
 
 export function AccountMenu() {
+
+  // Usando o useQuery do react-query para fazer as requisições para api usando a funções criadas na pasta src/api.
+  const { data: profile } = useQuery({
+    // Temos que passar uma key para o react-query saber se na aplicação tem essa requisição 
+    // feita e se tiver ele vai pegar do cache, com isso melhora no desempenho do site
+    queryKey: ['profile'],
+    queryFn: getProfile
+  })
+
+  const { data: managerRestaurant } = useQuery({
+    queryKey: ['managerRestaurant'],
+    queryFn: getManagerRestaurant
+  })
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -18,15 +35,15 @@ export function AccountMenu() {
           variant="outline"
           className="flex select-none items-center gap-2"
         >
-          Pizza Shop
+          {managerRestaurant?.name}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col">
-          <span>Marcos Paulo</span>
+          <span>{profile?.name}</span>
           <span className="text-xs font-normal text-muted-foreground">
-            marcos@email.com
+            {profile?.email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
