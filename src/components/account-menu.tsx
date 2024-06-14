@@ -12,18 +12,19 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import { getProfile } from '@/api/get-profile'
 import { getManagerRestaurant } from '@/api/get-manager-restaurant'
+import { Skeleton } from './ui/skeleton'
 
 export function AccountMenu() {
 
   // Usando o useQuery do react-query para fazer as requisições para api usando a funções criadas na pasta src/api.
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: isLoadingProfile } = useQuery({
     // Temos que passar uma key para o react-query saber se na aplicação tem essa requisição 
     // feita e se tiver ele vai pegar do cache, com isso melhora no desempenho do site
     queryKey: ['profile'],
     queryFn: getProfile
   })
 
-  const { data: managerRestaurant } = useQuery({
+  const { data: managerRestaurant, isLoading: isLoadingManagerRestaurant } = useQuery({
     queryKey: ['managerRestaurant'],
     queryFn: getManagerRestaurant
   })
@@ -35,16 +36,30 @@ export function AccountMenu() {
           variant="outline"
           className="flex select-none items-center gap-2"
         >
-          {managerRestaurant?.name}
+          {isLoadingManagerRestaurant ? 
+            ( 
+              <Skeleton className="w-40 h-4 " /> 
+            ) : ( 
+              managerRestaurant?.name 
+            )}
           <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col">
-          <span>{profile?.name}</span>
-          <span className="text-xs font-normal text-muted-foreground">
-            {profile?.email}
-          </span>
+          {isLoadingProfile ? (
+            <div className="space-y-1.5">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+          ) : (
+            <>
+              <span>{profile?.name}</span>
+                <span className="text-xs font-normal text-muted-foreground">
+                  {profile?.email}
+                </span>
+            </>
+          )}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
