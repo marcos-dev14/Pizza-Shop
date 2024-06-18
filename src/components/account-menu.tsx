@@ -11,7 +11,7 @@ import {
 } from './ui/dropdown-menu'
 import { useQuery } from '@tanstack/react-query'
 import { getProfile } from '@/api/get-profile'
-import { getManagerRestaurant } from '@/api/get-manager-restaurant'
+import { getManagedRestaurant } from '@/api/get-managed-restaurant'
 import { Skeleton } from './ui/skeleton'
 import { Dialog, DialogTrigger } from './ui/dialog'
 import { StoreProfileDialog } from './store-profile-dialog'
@@ -28,8 +28,8 @@ export function AccountMenu() {
   })
 
   const { data: managerRestaurant, isLoading: isLoadingManagerRestaurant } = useQuery({
-    queryKey: ['managerRestaurant'],
-    queryFn: getManagerRestaurant,
+    queryKey: ['managed-restaurant'],
+    queryFn: getManagedRestaurant,
     staleTime: Infinity
   })
 
