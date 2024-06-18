@@ -23,12 +23,14 @@ export function AccountMenu() {
     // Temos que passar uma key para o react-query saber se na aplicação tem essa requisição 
     // feita e se tiver ele vai pegar do cache, com isso melhora no desempenho do site
     queryKey: ['profile'],
-    queryFn: getProfile
+    queryFn: getProfile,
+    staleTime: Infinity
   })
 
   const { data: managerRestaurant, isLoading: isLoadingManagerRestaurant } = useQuery({
     queryKey: ['managerRestaurant'],
-    queryFn: getManagerRestaurant
+    queryFn: getManagerRestaurant,
+    staleTime: Infinity
   })
 
   return (
