@@ -11,12 +11,14 @@ export interface PaginationProps {
   pageIndex: number
   totalCount: number
   perPage: number
+  onPageChange: (pageIndex: number) => Promise<void> | void
 }
 
 export function Pagination({
   pageIndex,
   totalCount,
   perPage,
+  onPageChange
 }: PaginationProps) {
   // Calculo para pegar o total de numero de paginas, usamos o Math.cell para arredondar o resultado para cima.
   const pages = Math.ceil(totalCount / perPage) || 1
@@ -32,19 +34,39 @@ export function Pagination({
         </span>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button 
+            onClick={() => onPageChange(0)} 
+            variant="outline" 
+            className="h-8 w-8 p-0"
+            disabled={pageIndex === 0}
+          >
             <ChevronsLeft className="h-4 w-4" />
             <span className="sr-only">Primeira página</span>
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pageIndex - 1)} 
+            variant="outline" 
+            className="h-8 w-8 p-0"
+            disabled={pageIndex === 0}
+          >
             <ChevronLeft className="h-4 w-4" />
             <span className="sr-only">Primeira anterior</span>
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button 
+            onClick={() => onPageChange(pageIndex + 1)}
+            variant="outline" 
+            className="h-8 w-8 p-0"
+            disabled={pages <= pageIndex + 1}
+          >
             <ChevronRight className="h-4 w-4" />
             <span className="sr-only">Próxima página</span>
           </Button>
-          <Button variant="outline" className="h-8 w-8 p-0">
+          <Button
+            onClick={() => onPageChange(pages - 1)} // Pensando em index total de pagina não vai ser "20", ser sempre -1 (19)
+            variant="outline" 
+            className="h-8 w-8 p-0"
+            disabled={pages <= pageIndex + 1}
+          >
             <ChevronsRight className="h-4 w-4" />
             <span className="sr-only">Última página</span>
           </Button>
