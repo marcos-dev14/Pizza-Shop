@@ -19,6 +19,10 @@ import { z } from 'zod'
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()
 
+  const orderId = searchParams.get('orderId')
+  const customerName = searchParams.get('customerName')
+  const status = searchParams.get('status')
+
   // Reduzindo o quantidade de pagina para -1, isso porque não queremos que o usuário veja "localhost/3000/orders?page=2"
   const pageIndex = z.coerce
     .number()
@@ -26,8 +30,14 @@ export function Orders() {
     .parse(searchParams.get('page') ?? '1')
 
   const { data: result } = useQuery({
-    queryKey: ['orders', pageIndex], // Toda vez que a função de query depender de um parâmetro, esse parâmetro precisa está na queryKey
-    queryFn: () => getOrders({ pageIndex }),
+    queryKey: ['orders', pageIndex, orderId, customerName, status], // Toda vez que a função de query depender de um parâmetro, esse parâmetro precisa está na queryKey
+    queryFn: () => 
+      getOrders({ 
+        pageIndex, 
+        orderId, 
+        customerName, 
+        status: status === 'all' ? null : status
+      }),
   })
 
   function handlePagination(pageIndex: number) {
