@@ -37,6 +37,8 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         queryKey: ['orders'],
       })
 
+      // Percorrendo por toda a lista em cache e verificando se o id do pedido é o mesmo de
+      // cancelado e atualizando o status dele para cancelado.
       ordersListCache.forEach(([cacheKey, cacheData]) => {
         if (!cacheData) {
           return
