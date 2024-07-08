@@ -6,14 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useQuery } from '@tanstack/react-query'
 import { getPopularProducts } from '@/api/get-popular-products'
 
-const popularProductData = [
-  { product: 'Calabresa', amount: 12 },
-  { product: 'Mussarela', amount: 40 },
-  { product: '4 Queijos', amount: 20 },
-  { product: 'Pepperoni', amount: 34 },
-  { product: 'Frango', amount: 22 },
-]
-
 const COLORS = [
   colors.sky[500],
   colors.amber[500],
